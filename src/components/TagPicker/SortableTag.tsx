@@ -22,6 +22,7 @@ interface SortableTagProps {
   tag: Tag;
   renderBadge: (tag: Tag) => ReactNode;
   editTag: (tag: Tag) => void;
+  deleteTag: (tagId: string) => void;
 }
 
 export function SortableTag(props: SortableTagProps) {
@@ -87,6 +88,7 @@ export function SortableTag(props: SortableTagProps) {
             <Button
               variant='ghost'
               className='text-[#606060] items-center gap-2 justify-start'
+              onClick={() => props.deleteTag(props.tag.id)}
             >
               <TrashIcon className='w-5 h-5' />
               Delete

@@ -81,6 +81,10 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
     setTags(tags => tags.map(t => (t.id === tag.id ? tag : t)));
   }
 
+  function deleteTag(tagId: string) {
+    setTags(tags => tags.filter(tag => tag.id !== tagId));
+  }
+
   function handleDragEnd(e: DragOverEvent) {
     const overId = e.over?.id;
     const activeId = e.active?.id;
@@ -141,6 +145,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                   tag={tag}
                   renderBadge={props.renderBadge}
                   editTag={editTag}
+                  deleteTag={deleteTag}
                 />
               ))}
             </SortableContext>
@@ -151,6 +156,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                     tag={activeTag}
                     renderBadge={props.renderBadge}
                     editTag={editTag}
+                    deleteTag={deleteTag}
                   />
                 </DragOverlay>,
                 document.body
