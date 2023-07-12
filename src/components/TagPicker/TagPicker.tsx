@@ -159,6 +159,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                       renderBadge={props.renderBadge}
                       editTag={editTag}
                       deleteTag={deleteTag}
+                      isDragging
                     />
                   </DragOverlay>,
                   document.body

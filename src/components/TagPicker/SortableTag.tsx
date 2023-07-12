@@ -17,8 +17,10 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Input } from '../ui/input';
 import { Separator } from '../ui/separator';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '../ui/scroll-area';
 
 interface SortableTagProps {
+  isDragging?: boolean;
   tag: Tag;
   renderBadge: (tag: Tag) => ReactNode;
   editTag: (tag: Tag) => void;
@@ -68,54 +70,61 @@ export function SortableTag(props: SortableTagProps) {
           {props.renderBadge(props.tag)}
         </div>
       </div>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button size='icon' variant='ghost' className='mr-1 -ml-1'>
-            <MoreVerticalIcon className='w-4 h-4 text-slate-500' />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent asChild className='w-80'>
-          <div className='flex flex-col gap-3'>
-            <div className='relative'>
-              <EditIcon className='absolute w-5 h-5 top-2.5 left-1.5' />
-              <Input
-                value={name}
-                autoFocus
-                onChange={e => setName(e.target.value)}
-                className='pl-8'
-              />
-            </div>
-            <Button
-              variant='ghost'
-              className='text-[#606060] items-center gap-2 justify-start'
-              onClick={() => props.deleteTag(props.tag.id)}
-            >
-              <TrashIcon className='w-5 h-5' />
-              Delete
+      {!props.isDragging && (
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button size='icon' variant='ghost' className='mr-1 -ml-1'>
+              <MoreVerticalIcon className='w-4 h-4 text-slate-500' />
             </Button>
-            <Separator className='my-1' />
-            <div className='flex flex-col gap-2'>
-              {colors.map(color => (
+          </PopoverTrigger>
+          <PopoverContent
+            onFocusOutside={e => e.preventDefault()}
+            className='w-80'
+          >
+            <ScrollArea className='h-fit'>
+              <div className='flex flex-col gap-3 max-h-80'>
+                <div className='relative'>
+                  <EditIcon className='absolute w-5 h-5 top-2.5 left-1.5' />
+                  <Input
+                    value={name}
+                    autoFocus
+                    onChange={e => setName(e.target.value)}
+                    className='pl-8'
+                  />
+                </div>
                 <Button
                   variant='ghost'
-                  className='items-center justify-start gap-2'
-                  onClick={() => setColor(color)}
+                  className='text-[#606060] items-center gap-2 justify-start'
+                  onClick={() => props.deleteTag(props.tag.id)}
                 >
-                  <div
-                    className={cn(
-                      'rounded-full w-5 h-5',
-                      colorCircle({ color })
-                    )}
-                  ></div>
-                  <span>
-                    {color.slice(0, 1).toUpperCase() + color.slice(1)}
-                  </span>
+                  <TrashIcon className='w-5 h-5' />
+                  Delete
                 </Button>
-              ))}
-            </div>
-          </div>
-        </PopoverContent>
-      </Popover>
+                <Separator className='my-1' />
+                <div className='flex flex-col gap-2'>
+                  {colors.map(color => (
+                    <Button
+                      variant='ghost'
+                      className='items-center justify-start gap-2'
+                      onClick={() => setColor(color)}
+                    >
+                      <div
+                        className={cn(
+                          'rounded-full w-5 h-5',
+                          colorCircle({ color })
+                        )}
+                      ></div>
+                      <span>
+                        {color.slice(0, 1).toUpperCase() + color.slice(1)}
+                      </span>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            </ScrollArea>
+          </PopoverContent>
+        </Popover>
+      )}
     </div>
   );
 }
