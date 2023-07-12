@@ -30,6 +30,7 @@ import { Input } from '@/components/ui/input';
 import { SortableTag } from './SortableTag';
 import { createPortal } from 'react-dom';
 import { cva } from 'class-variance-authority';
+import { ScrollArea } from '../ui/scroll-area';
 
 export type Label = Omit<Tag, 'color'> & { tags?: Tag[] };
 
@@ -125,44 +126,46 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
             }}
           />
         </DropdownMenuLabel>
-        <div className='flex flex-col gap-3 m-3'>
-          <DndContext
-            sensors={sensors}
-            onDragStart={e => {
-              const activeTagId = e.active.id;
-              setActiveTag(tags.find(tag => tag.id === activeTagId));
-            }}
-            onDragEnd={handleDragEnd}
-            collisionDetection={closestCorners}
-          >
-            <SortableContext
-              items={tags}
-              strategy={verticalListSortingStrategy}
+        <ScrollArea className='w-48 m-3 h-fit'>
+          <div className='flex flex-col gap-3 max-h-56'>
+            <DndContext
+              sensors={sensors}
+              onDragStart={e => {
+                const activeTagId = e.active.id;
+                setActiveTag(tags.find(tag => tag.id === activeTagId));
+              }}
+              onDragEnd={handleDragEnd}
+              collisionDetection={closestCorners}
             >
-              {tags.map(tag => (
-                <SortableTag
-                  key={tag.id}
-                  tag={tag}
-                  renderBadge={props.renderBadge}
-                  editTag={editTag}
-                  deleteTag={deleteTag}
-                />
-              ))}
-            </SortableContext>
-            {activeTag &&
-              createPortal(
-                <DragOverlay>
+              <SortableContext
+                items={tags}
+                strategy={verticalListSortingStrategy}
+              >
+                {tags.map(tag => (
                   <SortableTag
-                    tag={activeTag}
+                    key={tag.id}
+                    tag={tag}
                     renderBadge={props.renderBadge}
                     editTag={editTag}
                     deleteTag={deleteTag}
                   />
-                </DragOverlay>,
-                document.body
-              )}
-          </DndContext>
-        </div>
+                ))}
+              </SortableContext>
+              {activeTag &&
+                createPortal(
+                  <DragOverlay>
+                    <SortableTag
+                      tag={activeTag}
+                      renderBadge={props.renderBadge}
+                      editTag={editTag}
+                      deleteTag={deleteTag}
+                    />
+                  </DragOverlay>,
+                  document.body
+                )}
+            </DndContext>
+          </div>
+        </ScrollArea>
         {search.trim().length > 0 && (
           <>
             <DropdownMenuItem
