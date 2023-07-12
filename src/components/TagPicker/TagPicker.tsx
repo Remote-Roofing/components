@@ -29,13 +29,36 @@ import { Input } from '@/components/ui/input';
 
 import { SortableTag } from './SortableTag';
 import { createPortal } from 'react-dom';
+import { cva } from 'class-variance-authority';
 
 export type Label = Omit<Tag, 'color'> & { tags?: Tag[] };
+
+export const colors = [
+  'yellow',
+  'red',
+  'grey',
+  'pink',
+  'blue',
+  'orange',
+] as const;
+
+export const colorCircle = cva(colors, {
+  variants: {
+    color: {
+      yellow: 'bg-[#E5C65A]',
+      red: 'bg-[#DA615D]',
+      grey: 'bg-[#667085]',
+      pink: 'bg-[#C95AE5]',
+      blue: 'bg-[#5A60E5]',
+      orange: 'bg-[#E59D5A]',
+    },
+  },
+});
 
 export interface Tag {
   id: string;
   name: string;
-  color: string;
+  color: (typeof colors)[number];
   labelId?: string;
 }
 
@@ -53,6 +76,10 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
   const [search, setSearch] = useState('');
   const [activeTag, setActiveTag] = useState<Tag | undefined>();
   const [tags, setTags] = useState<Tag[]>([]);
+
+  function editTag(tag: Tag) {
+    setTags(tags => tags.map(t => (t.id === tag.id ? tag : t)));
+  }
 
   function handleDragEnd(e: DragOverEvent) {
     const overId = e.over?.id;
@@ -86,7 +113,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                   tags.concat({
                     id: nanoid(5),
                     name: search,
-                    color: '#000000',
+                    color: 'grey',
                   })
                 );
                 setSearch('');
@@ -113,6 +140,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                   key={tag.id}
                   tag={tag}
                   renderBadge={props.renderBadge}
+                  editTag={editTag}
                 />
               ))}
             </SortableContext>
@@ -122,6 +150,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                   <SortableTag
                     tag={activeTag}
                     renderBadge={props.renderBadge}
+                    editTag={editTag}
                   />
                 </DragOverlay>,
                 document.body
@@ -136,7 +165,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                   tags.concat({
                     id: nanoid(5),
                     name: search,
-                    color: '#000000',
+                    color: 'grey',
                   })
                 );
                 setSearch('');

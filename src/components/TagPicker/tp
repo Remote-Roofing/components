@@ -1,0 +1,142 @@
+
+import React from 'react';
+import { DragOverEvent, DragOverlay, closestCorners } from '@dnd-kit/core';
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { nanoid } from 'nanoid';
+import {
+  Dispatch,
+  PropsWithChildren,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from 'react';
+
+import { Button } from '@/components/ui/button';
+
+import { SortableTag } from './SortableTag';
+import { createPortal } from 'react-dom';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import {
+  Command,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '../ui/command';
+
+export type Label = Omit<Tag, 'color'> & { tags?: Tag[] };
+
+export interface Tag {
+  id: string;
+  name: string;
+  color: string;
+  labelId?: string;
+}
+
+interface TagPickerProps {
+  tags: Tag[];
+  setTags: (tags: Tag[]) => void;
+  renderBadge: (tag: Tag) => ReactNode;
+}
+
+export function TagPicker({ ...props }: PropsWithChildren<TagPickerProps>) {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [search, setSearch] = useState('');
+  const [activeTag, setActiveTag] = useState<Tag | undefined>();
+  // const [tags, setTags] = useState<Tag[]>([]);
+
+  function handleDragEnd(e: DragOverEvent) {
+    const overId = e.over?.id;
+    const activeId = e.active?.id;
+
+    if (overId && activeId && overId !== activeId) {
+      const oldIndex = tags.findIndex(tag => tag.id === activeId);
+      const newIndex = tags.findIndex(tag => tag.id === overId);
+
+      setTags(arrayMove(tags, oldIndex, newIndex));
+    }
+  }
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button>Open</Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <Command>
+          <CommandInput
+            placeholder='Search tags'
+            value={search}
+            onValueChange={setSearch}
+            onKeyUp={e => {
+              if (e.key === 'Enter') {
+                const newTag: Tag = {
+                  id: nanoid(),
+                  name: search,
+                  color: 'blue',
+                };
+                setTags([...tags, newTag]);
+                setSearch('');
+              }
+            }}
+          />
+          <CommandGroup>
+            <div className='flex flex-col gap-3 m-3'>
+              <DndContext
+                sensors={sensors}
+                onDragStart={e => {
+                  const activeTagId = e.active.id;
+                  setActiveTag(tags.find(tag => tag.id === activeTagId));
+                }}
+                onDragEnd={handleDragEnd}
+                collisionDetection={closestCorners}
+              >
+                <SortableContext
+                  items={tags}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {tags.map(tag => (
+                    <CommandItem onSelect={() => {}}>
+                      <SortableTag
+                        key={tag.id}
+                        tag={tag}
+                        renderBadge={props.renderBadge}
+                      />
+                    </CommandItem>
+                  ))}
+                </SortableContext>
+                {activeTag &&
+                  createPortal(
+                    <DragOverlay>
+                      <SortableTag
+                        tag={activeTag}
+                        renderBadge={props.renderBadge}
+                      />
+                    </DragOverlay>,
+                    document.body
+                  )}
+              </DndContext>
+            </div>
+          </CommandGroup>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
