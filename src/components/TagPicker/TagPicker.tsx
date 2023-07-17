@@ -81,6 +81,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
 
   function insertTag() {
     if (!search) return;
+    if (search.trim().length === 0) return;
     if (tags.some(tag => tag.name === search)) return;
     setTags(
       tags.concat({
@@ -93,6 +94,9 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
   }
 
   function editTag(tag: Tag) {
+    if (!tag.name) return;
+    if (tag.name.trim().length === 0) return;
+    if (tags.some(t => t.name === tag.name)) return;
     setTags(tags => tags.map(t => (t.id === tag.id ? tag : t)));
   }
 
