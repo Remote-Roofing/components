@@ -80,12 +80,12 @@ export function SortableTag(props: SortableTagProps) {
           </PopoverTrigger>
           <PopoverContent
             onFocusOutside={e => e.preventDefault()}
-            className='w-80'
+            className='w-80 p-2'
           >
             <ScrollArea className='h-fit'>
               <div className='flex flex-col gap-3 max-h-80'>
-                <div className='relative'>
-                  <EditIcon className='absolute w-5 h-5 top-2.5 left-1.5' />
+                <div className='relative p-1'>
+                  <EditIcon className='absolute w-5 h-5 top-3.5 left-3' />
                   <Input
                     value={name}
                     autoFocus

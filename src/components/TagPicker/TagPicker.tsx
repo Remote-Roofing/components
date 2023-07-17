@@ -107,7 +107,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
       <DropdownMenuTrigger asChild>
         <Button>Open</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='pr-0'>
+      <DropdownMenuContent className='pr-0 pb-0'>
         <DropdownMenuLabel>
           <Input
             placeholder='Search or add tag'
