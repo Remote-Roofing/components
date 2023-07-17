@@ -172,7 +172,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                 strategy={verticalListSortingStrategy}
               >
                 {tags
-                  .filter(tag => tag.name.includes(search))
+                  .filter(tag => tag.name.toLowerCase().includes(search))
                   .map(tag => (
                     <SortableTag
                       key={tag.id}
