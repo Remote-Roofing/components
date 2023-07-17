@@ -126,6 +126,9 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
               }
             }}
           />
+          <p className='text-gray-600 text-xs pt-1'>
+            Select an option or create one
+          </p>
         </DropdownMenuLabel>
         <ScrollArea className='w-full h-fit m-0 mr-0'>
           <div className='flex flex-col gap-3 max-h-56'>
@@ -154,7 +157,8 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                     />
                   ))}
               </SortableContext>
-              {activeTag &&
+              {/* Temporarily comment out the overlay */}
+              {/* {activeTag &&
                 createPortal(
                   <DragOverlay>
                     <SortableTag
@@ -166,7 +170,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                     />
                   </DragOverlay>,
                   document.body
-                )}
+                )} */}
             </DndContext>
           </div>
         </ScrollArea>
