@@ -129,6 +129,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
           <Input
             placeholder='Search or add tag'
             value={search}
+            autoFocus
             onChange={e => setSearch(e.target.value)}
             onKeyDown={e => {
               if (e.key === 'Enter') {
@@ -139,6 +140,21 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
           <p className='pt-1 text-xs text-gray-600'>
             Select an option or create one
           </p>
+          {search.trim().length > 0 && (
+            <>
+              <Button
+                variant='ghost'
+                className='w-full p-2 my-1 text-left justify-normal'
+                onClick={insertTag}
+              >
+                <PlusIcon className='mr-1' />
+                Create
+                <Badge variant='outline' className='ml-1'>
+                  {search.length > 15 ? `${search.slice(0, 15)}...` : search}
+                </Badge>
+              </Button>
+            </>
+          )}
         </DropdownMenuLabel>
         <ScrollArea className='w-full m-0 mr-0 h-fit'>
           <div className='flex flex-col gap-3 max-h-56'>
@@ -184,17 +200,6 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
             </DndContext>
           </div>
         </ScrollArea>
-        {search.trim().length > 0 && (
-          <>
-            <DropdownMenuItem onClick={insertTag}>
-              <PlusIcon className='mr-1' />
-              Create
-              <Badge variant='outline' className='ml-1'>
-                {search.length > 15 ? `${search.slice(0, 15)}...` : search}
-              </Badge>
-            </DropdownMenuItem>
-          </>
-        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
