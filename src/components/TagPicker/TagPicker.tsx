@@ -79,6 +79,19 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
   const [activeTag, setActiveTag] = useState<Tag | undefined>();
   const [tags, setTags] = useState<Tag[]>(props.defaultTags ?? []);
 
+  function insertTag() {
+    if (!search) return;
+    if (tags.some(tag => tag.name === search)) return;
+    setTags(
+      tags.concat({
+        id: nanoid(5),
+        name: search,
+        color: 'grey',
+      })
+    );
+    setSearch('');
+  }
+
   function editTag(tag: Tag) {
     setTags(tags => tags.map(t => (t.id === tag.id ? tag : t)));
   }
@@ -115,14 +128,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
             onChange={e => setSearch(e.target.value)}
             onKeyDown={e => {
               if (e.key === 'Enter') {
-                setTags(
-                  tags.concat({
-                    id: nanoid(5),
-                    name: search,
-                    color: 'grey',
-                  })
-                );
-                setSearch('');
+                insertTag();
               }
             }}
           />
@@ -176,18 +182,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
         </ScrollArea>
         {search.trim().length > 0 && (
           <>
-            <DropdownMenuItem
-              onClick={() => {
-                setTags(
-                  tags.concat({
-                    id: nanoid(5),
-                    name: search,
-                    color: 'grey',
-                  })
-                );
-                setSearch('');
-              }}
-            >
+            <DropdownMenuItem onClick={insertTag}>
               <PlusIcon className='mr-1' />
               Create
               <Badge variant='outline' className='ml-1'>
