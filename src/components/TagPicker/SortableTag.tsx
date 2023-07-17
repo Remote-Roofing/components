@@ -20,6 +20,13 @@ import { cn } from '@/lib/utils';
 import { ScrollArea } from '../ui/scroll-area';
 import { DropdownMenuItem } from '../ui/dropdown-menu';
 import { Badge } from '../ui/badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
+import { createPortal } from 'react-dom';
 
 interface SortableTagProps {
   isDragging?: boolean;
@@ -70,6 +77,7 @@ export function SortableTag(props: SortableTagProps) {
             <GripVerticalIcon className='w-4 h-4 text-slate-500' />
           </Button>
           <Badge
+            title={props.tag.name}
             onClick={() => props.onTagSelected(props.tag)}
             className={cn(
               'cursor-pointer',
