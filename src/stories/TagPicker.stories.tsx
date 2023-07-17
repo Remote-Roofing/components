@@ -22,6 +22,12 @@ function MultiSelectTagPickerWithDefaultTags() {
           { id: '1', name: 'Tag 1', color: 'blue' },
           { id: '2', name: 'Tag 2', color: 'red' },
           { id: '3', name: 'Tag 3', color: 'yellow' },
+          { id: '4', name: 'Tag 4', color: 'orange' },
+          { id: '5', name: 'Tag 5', color: 'red' },
+          { id: '6', name: 'Tag 6', color: 'pink' },
+          { id: '7', name: 'Tag 7', color: 'blue' },
+          { id: '8', name: 'Tag 8', color: 'grey' },
+          { id: '9', name: 'Tag 9', color: 'orange' },
         ]}
         renderBadge={tag => (
           <Badge

@@ -52,7 +52,7 @@ export function SortableTag(props: SortableTagProps) {
   };
 
   return (
-    <DropdownMenuItem className='flex items-center justify-between p-0'>
+    <div className='flex items-center justify-between p-0'>
       <div
         ref={setNodeRef}
         style={style}
@@ -126,6 +126,6 @@ export function SortableTag(props: SortableTagProps) {
           </PopoverContent>
         </Popover>
       )}
-    </DropdownMenuItem>
+    </div>
   );
 }
