@@ -99,7 +99,7 @@ export function SortableTag(props: SortableTagProps) {
           </PopoverTrigger>
           <PopoverContent
             onFocusOutside={e => e.preventDefault()}
-            className='w-80 p-2'
+            className='p-2 max-w-fit'
           >
             <ScrollArea className='h-fit'>
               <div className='flex flex-col gap-3 max-h-80'>
@@ -112,34 +112,28 @@ export function SortableTag(props: SortableTagProps) {
                     className='pl-8'
                   />
                 </div>
-                <Button
-                  variant='ghost'
-                  className='text-[#606060] items-center gap-2 justify-start'
-                  onClick={() => props.deleteTag(props.tag.id)}
-                >
-                  <TrashIcon className='w-5 h-5' />
-                  Delete
-                </Button>
                 <Separator className='my-1' />
-                <div className='flex flex-col gap-2'>
+                <div className='grid max-w-full grid-cols-3 gap-2 place-items-center'>
                   {colors.map(color => (
                     <Button
+                      className={cn(
+                        'rounded-full h-10 w-10',
+                        colorCircle({ color })
+                      )}
                       variant='ghost'
-                      className='items-center justify-start gap-2'
                       onClick={() => setColor(color)}
-                    >
-                      <div
-                        className={cn(
-                          'rounded-full w-5 h-5',
-                          colorCircle({ color })
-                        )}
-                      ></div>
-                      <span>
-                        {color.slice(0, 1).toUpperCase() + color.slice(1)}
-                      </span>
-                    </Button>
+                    />
                   ))}
                 </div>
+                <Separator className='my-1' />
+                <Button
+                  variant='ghost'
+                  className='items-center justify-start gap-2 text-red-600 hover:text-red-600'
+                  onClick={() => props.deleteTag(props.tag.id)}
+                >
+                  <TrashIcon className='w-5 h-5 text-red-600' />
+                  Delete
+                </Button>
               </div>
             </ScrollArea>
           </PopoverContent>

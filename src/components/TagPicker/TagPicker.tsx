@@ -46,12 +46,12 @@ export const colors = [
 export const colorCircle = cva(colors, {
   variants: {
     color: {
-      yellow: 'bg-[#E5C65A]',
-      red: 'bg-[#DA615D]',
-      grey: 'bg-[#667085]',
-      pink: 'bg-[#C95AE5]',
-      blue: 'bg-[#5A60E5]',
-      orange: 'bg-[#E59D5A]',
+      yellow: 'bg-badge-yellow hover:bg-badge-yellow/80',
+      red: 'bg-badge-red hover:bg-badge-red/80',
+      grey: 'bg-badge-grey hover:bg-badge-grey/80',
+      pink: 'bg-badge-pink hover:bg-badge-pink/80',
+      blue: 'bg-badge-blue hover:bg-badge-blue/80',
+      orange: 'bg-badge-orange hover:bg-badge-orange/80',
     },
   },
 });
@@ -124,7 +124,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
       <DropdownMenuTrigger asChild>
         <Button>Open</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='pr-0 pb-0'>
+      <DropdownMenuContent className='pb-0 pr-0'>
         <DropdownMenuLabel>
           <Input
             placeholder='Search or add tag'
@@ -136,11 +136,11 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
               }
             }}
           />
-          <p className='text-gray-600 text-xs pt-1'>
+          <p className='pt-1 text-xs text-gray-600'>
             Select an option or create one
           </p>
         </DropdownMenuLabel>
-        <ScrollArea className='w-full h-fit m-0 mr-0'>
+        <ScrollArea className='w-full m-0 mr-0 h-fit'>
           <div className='flex flex-col gap-3 max-h-56'>
             <DndContext
               sensors={sensors}
