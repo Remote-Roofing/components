@@ -64,8 +64,8 @@ export interface Tag {
 }
 
 interface TagPickerProps {
-  renderBadge: (tag: Tag) => ReactNode;
   defaultTags?: Tag[];
+  onTagSelected: (tag: Tag) => void;
 }
 
 export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
@@ -161,9 +161,9 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                     <SortableTag
                       key={tag.id}
                       tag={tag}
-                      renderBadge={props.renderBadge}
                       editTag={editTag}
                       deleteTag={deleteTag}
+                      onTagSelected={props.onTagSelected}
                     />
                   ))}
               </SortableContext>
@@ -173,9 +173,9 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                   <DragOverlay>
                     <SortableTag
                       tag={activeTag}
-                      renderBadge={props.renderBadge}
                       editTag={editTag}
                       deleteTag={deleteTag}
+                      onTagSelected={props.onTagSelected}
                       isDragging
                     />
                   </DragOverlay>,
@@ -190,7 +190,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
               <PlusIcon className='mr-1' />
               Create
               <Badge variant='outline' className='ml-1'>
-                {search}
+                {search.length > 15 ? `${search.slice(0, 15)}...` : search}
               </Badge>
             </DropdownMenuItem>
           </>

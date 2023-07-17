@@ -19,13 +19,14 @@ import { Separator } from '../ui/separator';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '../ui/scroll-area';
 import { DropdownMenuItem } from '../ui/dropdown-menu';
+import { Badge } from '../ui/badge';
 
 interface SortableTagProps {
   isDragging?: boolean;
   tag: Tag;
-  renderBadge: (tag: Tag) => ReactNode;
   editTag: (tag: Tag) => void;
   deleteTag: (tagId: string) => void;
+  onTagSelected: (tag: Tag) => void;
 }
 
 export function SortableTag(props: SortableTagProps) {
@@ -68,7 +69,17 @@ export function SortableTag(props: SortableTagProps) {
           >
             <GripVerticalIcon className='w-4 h-4 text-slate-500' />
           </Button>
-          {props.renderBadge(props.tag)}
+          <Badge
+            onClick={() => props.onTagSelected(props.tag)}
+            className={cn(
+              'cursor-pointer',
+              colorCircle({ color: props.tag.color })
+            )}
+          >
+            {props.tag.name.length > 15
+              ? `${props.tag.name.slice(0, 15)}...`
+              : props.tag.name}
+          </Badge>
         </div>
       </div>
       {!props.isDragging && (

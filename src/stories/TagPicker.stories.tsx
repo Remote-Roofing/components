@@ -18,6 +18,7 @@ function MultiSelectTagPickerWithDefaultTags() {
   return (
     <div className='flex flex-col items-center gap-10'>
       <TagPicker
+        onTagSelected={tag => setSelectedTags([...selectedTags, tag])}
         defaultTags={[
           { id: '1', name: 'Tag 1', color: 'blue' },
           { id: '2', name: 'Tag 2', color: 'red' },
@@ -29,15 +30,6 @@ function MultiSelectTagPickerWithDefaultTags() {
           { id: '8', name: 'Tag 8', color: 'grey' },
           { id: '9', name: 'Tag 9', color: 'orange' },
         ]}
-        renderBadge={tag => (
-          <Badge
-            key={tag.id}
-            onClick={() => setSelectedTags([...selectedTags, tag])}
-            className={cn('cursor-pointer', colorCircle({ color: tag.color }))}
-          >
-            {tag.name}
-          </Badge>
-        )}
       />
       <h2 className='text-2xl font-bold'>Selected Tags:</h2>
       {selectedTags.map(tag => (
@@ -58,15 +50,7 @@ function MultiSelectTagPicker() {
   return (
     <div className='flex flex-col items-center gap-10'>
       <TagPicker
-        renderBadge={tag => (
-          <Badge
-            key={tag.id}
-            onClick={() => setSelectedTags([...selectedTags, tag])}
-            className={cn('cursor-pointer', colorCircle({ color: tag.color }))}
-          >
-            {tag.name}
-          </Badge>
-        )}
+        onTagSelected={tag => setSelectedTags([...selectedTags, tag])}
       />
       <h2 className='text-2xl font-bold'>Selected Tags:</h2>
       {selectedTags.map(tag => (
@@ -86,17 +70,7 @@ function SingleSelectTagPicker() {
 
   return (
     <div className='flex flex-col items-center gap-10'>
-      <TagPicker
-        renderBadge={tag => (
-          <Badge
-            key={tag.id}
-            onClick={() => setSelectedTag(tag)}
-            className={cn('cursor-pointer', colorCircle({ color: tag.color }))}
-          >
-            {tag.name}
-          </Badge>
-        )}
-      />
+      <TagPicker onTagSelected={tag => setSelectedTag(tag)} />
       <h2 className='text-2xl font-bold'>Selected Tag:</h2>
       {selectedTag && (
         <Badge
