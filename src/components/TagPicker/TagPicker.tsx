@@ -141,15 +141,17 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
                 items={tags}
                 strategy={verticalListSortingStrategy}
               >
-                {tags.map(tag => (
-                  <SortableTag
-                    key={tag.id}
-                    tag={tag}
-                    renderBadge={props.renderBadge}
-                    editTag={editTag}
-                    deleteTag={deleteTag}
-                  />
-                ))}
+                {tags
+                  .filter(tag => tag.name.includes(search))
+                  .map(tag => (
+                    <SortableTag
+                      key={tag.id}
+                      tag={tag}
+                      renderBadge={props.renderBadge}
+                      editTag={editTag}
+                      deleteTag={deleteTag}
+                    />
+                  ))}
               </SortableContext>
               {activeTag &&
                 createPortal(
