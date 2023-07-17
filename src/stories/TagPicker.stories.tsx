@@ -12,6 +12,40 @@ const meta: Meta<typeof TagPicker> = {
 
 type Story = StoryObj<typeof TagPicker>;
 
+function MultiSelectTagPickerWithDefaultTags() {
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+
+  return (
+    <div className='flex flex-col items-center gap-10'>
+      <TagPicker
+        defaultTags={[
+          { id: '1', name: 'Tag 1', color: 'blue' },
+          { id: '2', name: 'Tag 2', color: 'red' },
+          { id: '3', name: 'Tag 3', color: 'yellow' },
+        ]}
+        renderBadge={tag => (
+          <Badge
+            key={tag.id}
+            onClick={() => setSelectedTags([...selectedTags, tag])}
+            className={cn('cursor-pointer', colorCircle({ color: tag.color }))}
+          >
+            {tag.name}
+          </Badge>
+        )}
+      />
+      <h2 className='text-2xl font-bold'>Selected Tags:</h2>
+      {selectedTags.map(tag => (
+        <Badge
+          // onClick={() => setSelectedTag(null)}
+          className={cn('cursor-pointer', colorCircle({ color: tag.color }))}
+        >
+          {tag.name}
+        </Badge>
+      ))}
+    </div>
+  );
+}
+
 function MultiSelectTagPicker() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
@@ -74,6 +108,10 @@ function SingleSelectTagPicker() {
 }
 
 export default meta;
+
+export const MultiSelectWithDefaultTags: Story = {
+  render: () => <MultiSelectTagPickerWithDefaultTags />,
+};
 
 export const MultiSelect: Story = {
   render: () => <MultiSelectTagPicker />,

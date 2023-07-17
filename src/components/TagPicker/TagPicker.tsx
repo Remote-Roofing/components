@@ -65,6 +65,7 @@ export interface Tag {
 
 interface TagPickerProps {
   renderBadge: (tag: Tag) => ReactNode;
+  defaultTags?: Tag[];
 }
 
 export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
@@ -76,7 +77,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
   );
   const [search, setSearch] = useState('');
   const [activeTag, setActiveTag] = useState<Tag | undefined>();
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [tags, setTags] = useState<Tag[]>(props.defaultTags ?? []);
 
   function editTag(tag: Tag) {
     setTags(tags => tags.map(t => (t.id === tag.id ? tag : t)));
@@ -106,7 +107,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
       <DropdownMenuTrigger asChild>
         <Button>Open</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className='p-0'>
         <DropdownMenuLabel>
           <Input
             placeholder='Search or add tag'
@@ -126,7 +127,7 @@ export function TagPicker(props: PropsWithChildren<TagPickerProps>) {
             }}
           />
         </DropdownMenuLabel>
-        <ScrollArea className='w-48 m-3 h-fit'>
+        <ScrollArea className='w-full h-fit m-0 mr-0'>
           <div className='flex flex-col gap-3 max-h-56'>
             <DndContext
               sensors={sensors}

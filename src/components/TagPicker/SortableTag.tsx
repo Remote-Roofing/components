@@ -18,6 +18,7 @@ import { Input } from '../ui/input';
 import { Separator } from '../ui/separator';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '../ui/scroll-area';
+import { DropdownMenuItem } from '../ui/dropdown-menu';
 
 interface SortableTagProps {
   isDragging?: boolean;
@@ -51,7 +52,7 @@ export function SortableTag(props: SortableTagProps) {
   };
 
   return (
-    <div className='flex items-center justify-between'>
+    <DropdownMenuItem className='flex items-center justify-between p-0'>
       <div
         ref={setNodeRef}
         style={style}
@@ -125,6 +126,6 @@ export function SortableTag(props: SortableTagProps) {
           </PopoverContent>
         </Popover>
       )}
-    </div>
+    </DropdownMenuItem>
   );
 }
